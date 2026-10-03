@@ -5,11 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="theme-color" content="#0f766e">
     
-    <!-- Security & Privacy Hardening Meta Tags -->
-    <meta http-equiv="X-Content-Type-Options" content="nosniff">
-    <meta name="referrer" content="no-referrer-when-downgrade">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tailwindcss.com https://cdnjs.cloudflare.com; img-src 'self' data: blob:; font-src 'self' https://cdnjs.cloudflare.com;">
-
     <title>MOD Audit Interactive Checklist</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -38,6 +33,7 @@
                 padding: 0 !important;
                 appearance: none;
             }
+            /* Increased Print Photo Sizes */
             .print\:w-48 { width: 12rem !important; }
             .print\:h-48 { height: 12rem !important; }
             .print\:text-\[10px\] { font-size: 10px !important; }
@@ -184,17 +180,6 @@
     <script>
         "use strict";
 
-        // HTML Sanitizer to prevent DOM-based XSS
-        function escapeHtml(str) {
-            if (!str) return '';
-            return String(str)
-                .replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                .replace(/"/g, '&quot;')
-                .replace(/'/g, '&#039;');
-        }
-
         // Native IndexedDB Wrapper
         const dbUtils = {
             dbName: 'HotelModAuditDB',
@@ -257,6 +242,7 @@
             "[General Areas] Communication Centre",
             "[General Areas] Business Centre",
             "[General Areas] Swimming Pool/Gym",
+            "[General Areas] Tattva Spa",
             "[General Areas] Wet Area Restroom",
             "[General Areas] Steam/Sauna/Jacuzzi",
             "[General Areas] Water Body in Main Porch",
@@ -368,9 +354,9 @@
                     if (idx === 0) newReport.items[idx].guestData = [{ name: '', room: '', feedback: '' }, { name: '', room: '', feedback: '' }, { name: '', room: '', feedback: '' }];
                     if (idx === 1) newReport.items[idx].staffData = [{ name: '', dept: '', remarks: '' }, { name: '', dept: '', remarks: '' }, { name: '', dept: '', remarks: '' }];
                     if (idx === 5) newReport.items[idx].checkInData = [{ name: '', room: '', feedback: '' }];
-                    if (idx === 27) newReport.items[idx].tallyData = [{ outlet: 'Spring', morning: '', evening: '' }, { outlet: 'Myst', morning: '', evening: '' }];
-                    if (idx === 31) newReport.items[idx].dropData = [{ label: '1st Drop', time1: '', time2: '' }, { label: '2nd Drop', time1: '', time2: '' }, { label: '3rd Drop', time1: '', time2: '' }];
-                    if (idx === 64) {
+                    if (idx === 28) newReport.items[idx].tallyData = [{ outlet: 'Tattva Spa', morning: '', evening: '' }, { outlet: 'Restaurant', morning: '', evening: '' }];
+                    if (idx === 32) newReport.items[idx].dropData = [{ label: '1st Drop', time1: '', time2: '' }, { label: '2nd Drop', time1: '', time2: '' }, { label: '3rd Drop', time1: '', time2: '' }];
+                    if (idx === 65) {
                         newReport.items[idx].testCallData = [
                             { outlet: 'Spring', rings: '', staff: '' },
                             { outlet: 'Myst', rings: '', staff: '' },
@@ -452,27 +438,27 @@
 
             updateTallyInteraction(rowIdx, field, value) {
                 const report = this.getCurrentReport();
-                if (report && report.items[27]) {
-                    if (!report.items[27].tallyData) report.items[27].tallyData = [{ outlet: 'Spring', morning: '', evening: '' },{ outlet: 'Myst', morning: '', evening: '' }];
-                    report.items[27].tallyData[rowIdx][field] = value;
+                if (report && report.items[28]) {
+                    if (!report.items[28].tallyData) report.items[28].tallyData = [{ outlet: 'Tattva Spa', morning: '', evening: '' },{ outlet: 'Restaurant', morning: '', evening: '' }];
+                    report.items[28].tallyData[rowIdx][field] = value;
                     this.saveToLocal();
                 }
             },
 
             updateDropInteraction(rowIdx, field, value) {
                 const report = this.getCurrentReport();
-                if (report && report.items[31]) {
-                    if (!report.items[31].dropData) report.items[31].dropData = [{ label: '1st Drop', time1: '', time2: '' },{ label: '2nd Drop', time1: '', time2: '' }, { label: '3rd Drop', time1: '', time2: '' }];
-                    report.items[31].dropData[rowIdx][field] = value;
+                if (report && report.items[32]) {
+                    if (!report.items[32].dropData) report.items[32].dropData = [{ label: '1st Drop', time1: '', time2: '' },{ label: '2nd Drop', time1: '', time2: '' }, { label: '3rd Drop', time1: '', time2: '' }];
+                    report.items[32].dropData[rowIdx][field] = value;
                     this.saveToLocal();
                 }
             },
 
             updateTestCallInteraction(rowIdx, field, value) {
                 const report = this.getCurrentReport();
-                if (report && report.items[64]) {
-                    if (!report.items[64].testCallData) report.items[64].testCallData = [{ outlet: 'Spring', rings: '', staff: '' },{ outlet: 'Myst', rings: '', staff: '' },{ outlet: 'Mysouth', rings: '', staff: '' },{ outlet: 'IRD', rings: '', staff: '' },{ outlet: 'One Touch', rings: '', staff: '' }];
-                    report.items[64].testCallData[rowIdx][field] = value;
+                if (report && report.items[65]) {
+                    if (!report.items[65].testCallData) report.items[65].testCallData = [{ outlet: 'Spring', rings: '', staff: '' },{ outlet: 'Myst', rings: '', staff: '' },{ outlet: 'Mysouth', rings: '', staff: '' },{ outlet: 'IRD', rings: '', staff: '' },{ outlet: 'One Touch', rings: '', staff: '' }];
+                    report.items[65].testCallData[rowIdx][field] = value;
                     this.saveToLocal();
                 }
             },
@@ -575,19 +561,14 @@
                     const li = document.createElement('li');
                     li.className = "p-5 sm:p-6 hover:bg-slate-50 cursor-pointer flex items-center justify-between group transition-all";
                     li.onclick = () => this.openReport(r.id);
-                    const safeName = escapeHtml(r.meta.modName || 'New Audit');
-                    const safeDate = escapeHtml(r.meta.date);
-                    const safeDay = escapeHtml(r.meta.day || '---');
-                    const dateDay = safeDate.split('-')[2] || '--';
-                    
                     li.innerHTML = `
                         <div class="flex items-center gap-3 sm:gap-4">
                             <div class="w-10 h-10 sm:w-12 sm:h-12 bg-teal-50 text-teal-600 rounded-xl flex items-center justify-center font-bold text-sm sm:text-base">
-                                ${dateDay}
+                                ${r.meta.date.split('-')[2]}
                             </div>
                             <div>
-                                <h3 class="font-bold text-slate-800 text-sm sm:text-base">${safeName}</h3>
-                                <p class="text-[10px] sm:text-xs text-slate-400 font-bold uppercase tracking-widest">${safeDate} • ${safeDay}</p>
+                                <h3 class="font-bold text-slate-800 text-sm sm:text-base">${r.meta.modName || 'New Audit'}</h3>
+                                <p class="text-[10px] sm:text-xs text-slate-400 font-bold uppercase tracking-widest">${r.meta.date} • ${r.meta.day || '---'}</p>
                             </div>
                         </div>
                         <button onclick="app.deleteReport('${r.id}', event)" class="text-slate-300 hover:text-red-500 transition-colors p-2"><i class="fa-solid fa-trash-can"></i></button>
@@ -637,7 +618,8 @@
                     const question = q.replace(/\[(.*?)\]\s*/, '');
                     
                     const isBOH = cat === "Back of the House";
-                    const allowPhotos = isBOH || (idx >= 54 && idx <= 60);
+                    // Allows photos for Back of House and Room Checks (indices 55 to 61)
+                    const allowPhotos = isBOH || (idx >= 55 && idx <= 61);
 
                     if (cat !== currentCat) {
                         const header = document.createElement('div');
@@ -659,7 +641,7 @@
                         </div>
                     `).join('');
 
-                    if (idx === 0 || idx === 1 || idx === 5 || idx === 27 || idx === 31 || idx === 64) {
+                    if (idx === 0 || idx === 1 || idx === 5 || idx === 28 || idx === 32 || idx === 65) {
                         let dataArr = [];
                         let col1 = "", col2 = "", col3 = "";
                         let updateFnName = "";
@@ -679,14 +661,14 @@
                             dataArr = item.checkInData || [{name:'', room:'', feedback:''}];
                             col1 = "Guest Name"; col2 = "Room No"; col3 = "Feedback"; updateFnName = "updateCheckInInteraction";
                             isReadOnlyCol1 = false;
-                        } else if (idx === 27) {
-                            dataArr = item.tallyData || [{ outlet: 'Spring', morning: '', evening: '' },{ outlet: 'Myst', morning: '', evening: '' }];
+                        } else if (idx === 28) {
+                            dataArr = item.tallyData || [{ outlet: 'Tattva Spa', morning: '', evening: '' },{ outlet: 'Restaurant', morning: '', evening: '' }];
                             col1 = "Outlet"; col2 = "Morning"; col3 = "Evening"; updateFnName = "updateTallyInteraction";
-                        } else if (idx === 31) {
+                        } else if (idx === 32) {
                             dataArr = item.dropData || [{ label: '1st Drop', time1: '', time2: '' },{ label: '2nd Drop', time1: '', time2: '' }, { label: '3rd Drop', time1: '', time2: '' }];
                             col1 = "Drop Point"; col2 = "Time"; col3 = "No of Pax"; updateFnName = "updateDropInteraction";
                             inputTypeCol2 = "time"; inputTypeCol3 = "number";
-                        } else if (idx === 64) {
+                        } else if (idx === 65) {
                             dataArr = item.testCallData || [{ outlet: 'Spring', rings: '', staff: '' },{ outlet: 'Myst', rings: '', staff: '' },{ outlet: 'Mysouth', rings: '', staff: '' },{ outlet: 'IRD', rings: '', staff: '' },{ outlet: 'One Touch', rings: '', staff: '' }];
                             col1 = "Outlet"; col2 = "No. of Rings"; col3 = "Staff Name"; updateFnName = "updateTestCallInteraction";
                         }
@@ -696,32 +678,28 @@
                                 <table class="w-full min-w-[600px] print:min-w-0 border-collapse text-xs">
                                     <thead>
                                         <tr class="bg-slate-50 print:bg-slate-100">
-                                            <th class="border-b border-slate-200 p-3 text-left font-black uppercase w-1/3">${escapeHtml(col1)}</th>
-                                            <th class="border-b border-l border-slate-200 p-3 text-left font-black uppercase w-1/3">${escapeHtml(col2)}</th>
-                                            <th class="border-b border-l border-slate-200 p-3 text-left font-black uppercase w-1/3">${escapeHtml(col3)}</th>
+                                            <th class="border-b border-slate-200 p-3 text-left font-black uppercase w-1/3">${col1}</th>
+                                            <th class="border-b border-l border-slate-200 p-3 text-left font-black uppercase w-1/3">${col2}</th>
+                                            <th class="border-b border-l border-slate-200 p-3 text-left font-black uppercase w-1/3">${col3}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                         `;
                         dataArr.forEach((d, dIdx) => {
                             const keys = Object.keys(d);
-                            const val0 = escapeHtml(d[keys[0]]);
-                            const val1 = escapeHtml(d[keys[1]]);
-                            const val2 = escapeHtml(d[keys[2]]);
-
                             gridHtml += `
                                 <tr class="print:border-b group">
                                     <td class="border-b border-slate-200 p-0 print:p-1 align-top bg-white transition-colors group-hover:bg-slate-50">
-                                        <input type="text" value="${val0}" ${isReadOnlyCol1?'readonly':''} placeholder="---" class="w-full min-w-[120px] print:min-w-0 p-3 grid-input no-print ${isReadOnlyCol1?'bg-slate-50 font-bold text-slate-700':'bg-transparent'}" oninput="this.nextElementSibling.textContent = this.value || '---'" onchange="app.${updateFnName}(${dIdx}, '${keys[0]}', this.value)">
-                                        <div class="hidden print-only text-[10px] whitespace-pre-wrap break-words p-1 ${isReadOnlyCol1?'font-bold text-slate-800':'text-slate-800'}">${val0 || '---'}</div>
+                                        <input type="text" value="${d[keys[0]]}" ${isReadOnlyCol1?'readonly':''} placeholder="---" class="w-full min-w-[120px] print:min-w-0 p-3 grid-input no-print ${isReadOnlyCol1?'bg-slate-50 font-bold text-slate-700':'bg-transparent'}" oninput="this.nextElementSibling.textContent = this.value || '---'" onchange="app.${updateFnName}(${dIdx}, '${keys[0]}', this.value)">
+                                        <div class="hidden print-only text-[10px] whitespace-pre-wrap break-words p-1 ${isReadOnlyCol1?'font-bold text-slate-800':'text-slate-800'}">${d[keys[0]] || '---'}</div>
                                     </td>
                                     <td class="border-b border-l border-slate-200 p-0 print:p-1 align-top bg-white transition-colors group-hover:bg-slate-50">
-                                        <input type="${inputTypeCol2}" value="${val1}" placeholder="---" class="w-full min-w-[120px] print:min-w-0 p-3 grid-input no-print bg-transparent" oninput="this.nextElementSibling.textContent = this.value || '---'" onchange="app.${updateFnName}(${dIdx}, '${keys[1]}', this.value)">
-                                        <div class="hidden print-only text-[10px] whitespace-pre-wrap break-words p-1 text-slate-800">${val1 || '---'}</div>
+                                        <input type="${inputTypeCol2}" value="${d[keys[1]]}" placeholder="---" class="w-full min-w-[120px] print:min-w-0 p-3 grid-input no-print bg-transparent" oninput="this.nextElementSibling.textContent = this.value || '---'" onchange="app.${updateFnName}(${dIdx}, '${keys[1]}', this.value)">
+                                        <div class="hidden print-only text-[10px] whitespace-pre-wrap break-words p-1 text-slate-800">${d[keys[1]] || '---'}</div>
                                     </td>
                                     <td class="border-b border-l border-slate-200 p-0 print:p-1 align-top bg-white transition-colors group-hover:bg-slate-50">
-                                        <input type="${inputTypeCol3}" value="${val2}" placeholder="---" class="w-full min-w-[120px] print:min-w-0 p-3 grid-input no-print bg-transparent" oninput="this.nextElementSibling.textContent = this.value || '---'" onchange="app.${updateFnName}(${dIdx}, '${keys[2]}', this.value)">
-                                        <div class="hidden print-only text-[10px] whitespace-pre-wrap break-words p-1 text-slate-800">${val2 || '---'}</div>
+                                        <input type="${inputTypeCol3}" value="${d[keys[2]]}" placeholder="---" class="w-full min-w-[120px] print:min-w-0 p-3 grid-input no-print bg-transparent" oninput="this.nextElementSibling.textContent = this.value || '---'" onchange="app.${updateFnName}(${dIdx}, '${keys[2]}', this.value)">
+                                        <div class="hidden print-only text-[10px] whitespace-pre-wrap break-words p-1 text-slate-800">${d[keys[2]] || '---'}</div>
                                     </td>
                                 </tr>
                             `;
@@ -732,23 +710,22 @@
                             <div class="flex flex-col gap-2">
                                 <div class="flex items-start gap-3">
                                     <span class="text-teal-600 font-black text-xs mt-0.5 print:text-slate-400">${idx+1}.</span>
-                                    <p class="text-sm font-bold text-slate-800 print:text-[11px] leading-relaxed">${escapeHtml(question)}</p>
+                                    <p class="text-sm font-bold text-slate-800 print:text-[11px] leading-relaxed">${question}</p>
                                 </div>
                                 ${gridHtml}
                                 ${allowPhotos ? `<div class="mt-3 flex gap-3 overflow-x-auto print:flex-wrap print:mt-1">${photos}</div>` : ''}
                             </div>
                         `;
                     } else {
-                        const safeRemarks = escapeHtml(item.remarks || '');
                         row.innerHTML = `
                             <div class="flex flex-col lg:flex-row gap-4 sm:gap-6 print:gap-2">
                                 <div class="flex-1">
                                     <div class="flex items-start gap-3">
                                         <span class="text-teal-600 font-black text-xs mt-0.5 print:text-slate-400">${idx+1}.</span>
-                                        <p class="text-sm font-bold text-slate-800 print:text-[11px] leading-relaxed">${escapeHtml(question)}</p>
+                                        <p class="text-sm font-bold text-slate-800 print:text-[11px] leading-relaxed">${question}</p>
                                     </div>
-                                    <div class="mt-3 no-print"><textarea oninput="this.parentElement.nextElementSibling.textContent = this.value || '---'" onchange="app.updateItemRemarks(${idx}, this.value)" class="w-full border border-slate-100 rounded-lg p-3 text-sm focus:ring-1 focus:ring-teal-500 outline-none transition-shadow" placeholder="Observations..." rows="2">${safeRemarks}</textarea></div>
-                                    <div class="hidden print-only text-[11px] text-slate-800 mt-2 font-medium whitespace-pre-wrap break-words">${safeRemarks || '---'}</div>
+                                    <div class="mt-3 no-print"><textarea oninput="this.parentElement.nextElementSibling.textContent = this.value || '---'" onchange="app.updateItemRemarks(${idx}, this.value)" class="w-full border border-slate-100 rounded-lg p-3 text-sm focus:ring-1 focus:ring-teal-500 outline-none transition-shadow" placeholder="Observations..." rows="2">${item.remarks || ''}</textarea></div>
+                                    <div class="hidden print-only text-[11px] text-slate-800 mt-2 font-medium whitespace-pre-wrap break-words">${item.remarks || '---'}</div>
                                     ${allowPhotos ? `<div class="mt-3 flex gap-3 overflow-x-auto print:flex-wrap print:mt-1">${photos}</div>` : ''}
                                 </div>
                                 <div class="no-print flex flex-col gap-2 min-w-[150px] w-full lg:w-auto">
@@ -759,7 +736,7 @@
                                     </div>
                                     ${allowPhotos ? `<button onclick="app.triggerPhotoUpload(${idx})" class="text-[10px] font-black bg-slate-50 hover:bg-teal-50 text-slate-500 hover:text-teal-600 py-3 lg:py-2 rounded-lg border border-slate-100 transition-all uppercase tracking-tighter w-full"><i class="fa-solid fa-camera mr-1"></i> Add Evidence</button>` : ''}
                                 </div>
-                                <div class="hidden print-only text-[10px] font-black text-right uppercase pt-1">[${escapeHtml(item.status || 'PENDING')}]</div>
+                                <div class="hidden print-only text-[10px] font-black text-right uppercase pt-1">[${item.status || 'PENDING'}]</div>
                             </div>
                         `;
                     }
